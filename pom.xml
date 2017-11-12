@@ -1,0 +1,284 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<!-- ============================================================================= -->
+	<!-- General Information -->
+	<!-- ============================================================================= -->
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>net.sf.gee</groupId>
+	<artifactId>g-parent</artifactId>
+	<version>0.1.20</version>
+	<packaging>pom</packaging>
+
+	<name>g-parent</name>
+	<description>G-Parent is pom file for all rest of G-EE module.</description>
+	<url>https://www.sourceforge.net/p/g-ee</url>
+
+	<!-- ============================================================================= -->
+	<!-- License -->
+	<!-- ============================================================================= -->
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<!-- ============================================================================= -->
+	<!-- Developers -->
+	<!-- ============================================================================= -->
+	<developers>
+		<developer>
+			<name>Giorgio Desideri</name>
+			<email>Giorgio Desideri</email>
+			<organization>None.</organization>
+			<organizationUrl>https://www.sourceforge.net/p/g-ee</organizationUrl>
+		</developer>
+	</developers>
+
+	<!-- ============================================================================= -->
+	<!-- Software Content Management -->
+	<!-- ============================================================================= -->
+	<scm>
+		<connection>scm:hg:https://bitbucket.org/kallsu/g-parent</connection>
+		<developerConnection>scm:hg:https://bitbucket.org/kallsu/g-parent</developerConnection>
+		<url>http://bitbucket.org/kallsu/g-parent</url>
+	</scm>
+
+	<!-- ============================================================================= -->
+	<!-- Properties Information -->
+	<!-- ============================================================================= -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Java version -->
+		<java.version>1.8</java.version>
+
+		<!-- Build Plugin Version -->
+		<compiler.plugin.version>3.7.0</compiler.plugin.version>
+		<surfire.plugin.version>2.20.1</surfire.plugin.version>
+		<dependency-plugin.version>3.0.2</dependency-plugin.version>
+		<release-plugin.version>2.5.3</release-plugin.version>
+		<source-plugin.version>3.0.1</source-plugin.version>
+		<gpg-plugin.version>1.6</gpg-plugin.version>
+
+		<!-- Report Plugin Version -->
+		<info-report-plugin.version>2.9</info-report-plugin.version>
+		<javadoc-plugin.version>2.10.4</javadoc-plugin.version>
+	</properties>
+
+	<!-- ============================================================================= -->
+	<!-- Dependencis Information -->
+	<!-- ============================================================================= -->
+	<dependencies>
+
+		<!-- ************************ -->
+		<!-- Test -->
+		<!-- ************************ -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<!-- ============================================================================= -->
+	<!-- Build Information -->
+	<!-- ============================================================================= -->
+	<build>
+
+		<!-- *********************************************************** -->
+		<!-- Plugin Management -->
+		<!-- *********************************************************** -->
+		<pluginManagement>
+			<plugins>
+
+				<!-- compiler -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${compiler.plugin.version}</version>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+					</configuration>
+				</plugin>
+
+				<!-- surefire -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${surfire.plugin.version}</version>
+				</plugin>
+
+				<!-- dependency -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>${dependency-plugin.version}</version>
+					<executions>
+						<execution>
+							<id>copy-dependencies</id>
+							<phase>clean</phase>
+							<goals>
+								<goal>copy-dependencies</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>${project.build.directory}/libraries</outputDirectory>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<!-- Nexus plugin -->
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>1.6.3</version>
+					<extensions>true</extensions>
+					<configuration>
+						<serverId>ossrh</serverId>
+						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+						<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					</configuration>
+				</plugin>
+
+				<!-- SOURCE -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${source-plugin.version}</version>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar-no-fork</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<!-- JAVADOC -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${javadoc-plugin.version}</version>
+					<configuration>
+						<additionalparam>-Xdoclint:none</additionalparam>
+					</configuration>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<!-- GPG Plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>${gpg-plugin.version}</version>
+					<executions>
+						<execution>
+							<id>sign-artifacts</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sign</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+	</build>
+
+	<!-- ============================================================================= -->
+	<!-- Report Information -->
+	<!-- ============================================================================= -->
+	<reporting>
+
+		<outputDirectory>${basedir}/target/site</outputDirectory>
+
+		<plugins>
+			<!-- Infor Reports -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>${info-report-plugin.version}</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>index</report>
+							<report>dependencies</report>
+							<report>project-team</report>
+							<report>mailing-list</report>
+							<report>cim</report>
+							<report>issue-tracking</report>
+							<report>license</report>
+							<report>scm</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+
+			<!-- javadoc -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${javadoc-plugin.version}</version>
+
+				<reportSets>
+					<reportSet>
+						<id>default</id>
+						<configuration>
+							<show>private</show>
+							<nohelp>true</nohelp>
+							<additionalparam>-Xdoclint:none</additionalparam>
+						</configuration>
+						<reports>
+							<report>javadoc</report>
+							<report>test-javadoc</report>
+							<report>javadoc-no-fork</report>
+							<report>test-javadoc-no-fork</report>
+						</reports>
+					</reportSet>
+
+					<reportSet>
+						<id>aggregate</id>
+						<configuration>
+							<additionalparam>-Xdoclint:none</additionalparam>
+						</configuration>
+
+						<reports>
+							<report>aggregate</report>
+							<report>javadoc-no-fork</report>
+							<report>test-javadoc-no-fork</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
+
+	<!-- ============================================================================= -->
+	<!-- Distribution Management Information -->
+	<!-- ============================================================================= -->
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+</project>
