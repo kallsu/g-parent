@@ -41,9 +41,9 @@
 	<!-- Software Content Management -->
 	<!-- ============================================================================= -->
 	<scm>
-		<connection>scm:hg:https://bitbucket.org/kallsu/g-parent</connection>
-		<developerConnection>scm:hg:https://bitbucket.org/kallsu/g-parent</developerConnection>
-		<url>http://bitbucket.org/kallsu/g-parent</url>
+		<connection>scm:hg:https://github.com/kallsu/g-parent</connection>
+		<developerConnection>scm:hg:https://github.com/kallsu/g-parent</developerConnection>
+		<url>http://github.com/kallsu/g-parent</url>
 	</scm>
 
 	<!-- ============================================================================= -->
